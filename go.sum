@@ -1,2 +1,4 @@
+github.com/banaconda/nb-logger v1.0.0 h1:AHVXlSrZjkjGcHzXu8Xx/qh8admiiNQuH3kE8tZVZ90=
+github.com/banaconda/nb-logger v1.0.0/go.mod h1:ppFvWP2+F3R2afy5R6/YW0ZJ47suEzOfVwIYLEXLY5o=
 github.com/veandco/go-sdl2 v0.4.24 h1:J+OCnPp0yfas4DAG13e3kIgC84mNxWGa3gpWYxrQQfI=
 github.com/veandco/go-sdl2 v0.4.24/go.mod h1:OROqMhHD43nT4/i9crJukyVecjPNYYuCofep6SNiAjY=
