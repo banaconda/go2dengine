@@ -97,6 +97,13 @@ func (g *Game) InitECS() {
 	enemy := factory.CraeteEnemy(player, sdl.FPoint{X: 100, Y: 100})
 	globals.World.AddEntity(&enemy)
 
+	for x := 0; x < 8; x++ {
+		for y := 0; y < 8; y++ {
+			tile := factory.CreateTile(sdl.FPoint{X: float32(x * 100), Y: float32(y * 100)})
+			globals.World.AddEntity(&tile)
+		}
+	}
+
 	globals.Logger.Info("init done")
 }
 

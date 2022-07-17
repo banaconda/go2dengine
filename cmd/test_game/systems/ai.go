@@ -58,28 +58,24 @@ func (s *AISystem) Update() {
 		x := trans.Pos.X - targetTrans.Pos.X
 		y := trans.Pos.Y - targetTrans.Pos.Y
 
-		// TODO: change to check collision
-		if x != 0 || y != 0 {
-			distance := math.Sqrt(float64(x*x + y*y))
-
-			a := sdl.FRect{X: trans.Pos.X, Y: trans.Pos.Y, W: trans.Dim.X, H: trans.Dim.Y}
-			b := sdl.FRect{X: targetTrans.Pos.X, Y: targetTrans.Pos.Y, W: targetTrans.Dim.X, H: targetTrans.Dim.Y}
+		a := sdl.FRect{X: trans.Pos.X, Y: trans.Pos.Y, W: trans.Dim.X, H: trans.Dim.Y}
+		b := sdl.FRect{X: targetTrans.Pos.X, Y: targetTrans.Pos.Y, W: targetTrans.Dim.X, H: targetTrans.Dim.Y}
+		distance := math.Sqrt(float64(x*x + y*y))
+		switch ai.AIType {
+		case components.AI_TYPE_CHASE:
 			if algorithm.AABB(a, b) {
 				globals.Logger.Info("collision")
 			} else {
-				switch ai.AIType {
-				case components.AI_TYPE_CHASE:
-					if distance > float64(targetTrans.Dim.X) {
-						trans.Pos.X -= x / float32(distance)
-						trans.Pos.Y -= y / float32(distance)
-					}
-				case components.AI_TYPE_FLEE:
-					globals.Logger.Info("distance: %f", distance)
-					if distance < float64(targetTrans.Dim.X*2) {
-						trans.Pos.X += x / float32(distance) * trans.Speed
-						trans.Pos.Y += y / float32(distance) * trans.Speed
-					}
+				if distance > float64(targetTrans.Dim.X) {
+					trans.Pos.X -= x / float32(distance)
+					trans.Pos.Y -= y / float32(distance)
 				}
+			}
+		case components.AI_TYPE_FLEE:
+			globals.Logger.Info("distance: %f", distance)
+			if distance < float64(targetTrans.Dim.X*2) {
+				trans.Pos.X += x / float32(distance) * trans.Speed
+				trans.Pos.Y += y / float32(distance) * trans.Speed
 			}
 		}
 
