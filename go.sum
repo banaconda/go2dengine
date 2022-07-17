@@ -1,4 +1,10 @@
 github.com/banaconda/nb-logger v1.0.0 h1:AHVXlSrZjkjGcHzXu8Xx/qh8admiiNQuH3kE8tZVZ90=
 github.com/banaconda/nb-logger v1.0.0/go.mod h1:ppFvWP2+F3R2afy5R6/YW0ZJ47suEzOfVwIYLEXLY5o=
+github.com/banaconda/nb-logger v1.0.1 h1:hmFPS4u5vKOa87yn/5KbslNoLcpM/1DFwg0JxcixNqs=
+github.com/banaconda/nb-logger v1.0.1/go.mod h1:ppFvWP2+F3R2afy5R6/YW0ZJ47suEzOfVwIYLEXLY5o=
+github.com/ungerik/go3d v0.0.0-20220309204530-55ced4bcb334 h1:+pr8RFlV8713Uvkaxzwx/McFP5yxSC1TngTocIv6P2Q=
+github.com/ungerik/go3d v0.0.0-20220309204530-55ced4bcb334/go.mod h1:ipEjrk2uLK4xX8ivWBPIVOD0fMtKyPI0strluUfIlYQ=
 github.com/veandco/go-sdl2 v0.4.24 h1:J+OCnPp0yfas4DAG13e3kIgC84mNxWGa3gpWYxrQQfI=
 github.com/veandco/go-sdl2 v0.4.24/go.mod h1:OROqMhHD43nT4/i9crJukyVecjPNYYuCofep6SNiAjY=
+golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75 h1:x03zeu7B2B11ySp+daztnwM5oBJ/8wGUSqrwcw9L0RA=
+golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75/go.mod h1:Kr81I6Kryrl9sr8s2FK3vxD90NdsKWRuOIl2O4CvYbA=

@@ -1,0 +1,6 @@
+*.log
+cmd/test_game/test_game
+cmd/test_game/test_game.exe
+cmd/test_game/build.sh
+cmd/test_game/linux.sh
+cmd/test_game/mac.sh
