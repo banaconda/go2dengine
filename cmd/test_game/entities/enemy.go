@@ -5,9 +5,9 @@ import (
 	"go2dengine/pkg/ecs"
 )
 
-type Player struct {
+type Enemy struct {
 	*ecs.Entity
-	*components.ActionComponent
+	*components.AIComponent
 	*components.TransformComponent
 	*components.DrawComponent
 }

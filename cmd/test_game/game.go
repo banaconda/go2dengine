@@ -59,7 +59,12 @@ func (g *Game) InitECS() {
 	g.world = ecs.NewWorld()
 
 	player := entities.Player{
-		Entity: &ecs.Entity{},
+		Entity: ecs.NewEntity(),
+		ActionComponent: &components.ActionComponent{
+			CurDir:  sdl.FPoint{},
+			LastDir: sdl.FPoint{},
+			Motion:  0,
+		},
 		TransformComponent: &components.TransformComponent{
 			Pos: sdl.FPoint{X: 100, Y: 110},
 			Dim: sdl.FPoint{X: 100, Y: 100},
@@ -67,15 +72,27 @@ func (g *Game) InitECS() {
 		DrawComponent: &components.DrawComponent{
 			Type:  components.DRAW_TYPE_PLAYER,
 			Shape: components.DRAW_SHAPE_RECT,
+			R:     0,
+			G:     255,
+			B:     0,
+			A:     255,
+		},
+	}
+
+	enemy := entities.Enemy{
+		Entity:      ecs.NewEntity(),
+		AIComponent: &components.AIComponent{Target: player, AIType: components.AI_TYPE_FLEE},
+		TransformComponent: &components.TransformComponent{
+			Pos: sdl.FPoint{X: 100, Y: 110},
+			Dim: sdl.FPoint{X: 100, Y: 100},
+		},
+		DrawComponent: &components.DrawComponent{
+			Type:  components.DRAW_TYPE_ENEMY,
+			Shape: components.DRAW_SHAPE_RECT,
 			R:     255,
 			G:     0,
 			B:     0,
 			A:     255,
-		},
-		ActionComponent: &components.ActionComponent{
-			CurDir:  sdl.FPoint{},
-			LastDir: sdl.FPoint{},
-			Motion:  0,
 		},
 	}
 
@@ -84,8 +101,10 @@ func (g *Game) InitECS() {
 		Renderer: g.renderer,
 	}, systems.Drawable)
 	g.world.AddSystem(&systems.ControlSystem{}, systems.Controllable)
+	g.world.AddSystem(&systems.AISystem{}, systems.AIable)
 
 	g.world.AddEntity(&player)
+	g.world.AddEntity(&enemy)
 	globals.Logger.Info("init done")
 }
 

@@ -11,13 +11,11 @@ var Positionable *positionable
 type positionEntity struct {
 	*ecs.Entity
 	*components.TransformComponent
-	*components.ActionComponent
 }
 
 type positionable interface {
 	ecs.DefaultEntityInterface
 	components.TransformInterface
-	components.ActionInterface
 }
 
 type PositionSystem struct {
@@ -30,7 +28,6 @@ func (s *PositionSystem) Add(id ecs.Identifier) {
 		positionEntity{
 			obj.GetEntity(),
 			obj.GetTransformComponent(),
-			obj.GetActionComponent(),
 		})
 }
 
@@ -45,10 +42,6 @@ func (s *PositionSystem) Update() {
 	for _, entity := range s.entities {
 		entity.ID()
 		trans := entity.GetTransformComponent()
-		action := entity.GetActionComponent()
-
-		trans.Pos.X += action.CurDir.X
-		trans.Pos.Y += action.CurDir.Y
 
 		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), trans.Pos.X, trans.Pos.Y)
 	}
