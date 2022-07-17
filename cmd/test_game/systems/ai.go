@@ -1,10 +1,13 @@
 package systems
 
 import (
+	"go2dengine/cmd/test_game/algorithm"
 	"go2dengine/cmd/test_game/components"
 	"go2dengine/cmd/test_game/globals"
 	"go2dengine/pkg/ecs"
 	"math"
+
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 var AIable *aiable
@@ -59,21 +62,27 @@ func (s *AISystem) Update() {
 		if x != 0 || y != 0 {
 			distance := math.Sqrt(float64(x*x + y*y))
 
-			switch ai.AIType {
-			case components.AI_TYPE_CHASER:
-				if distance > float64(targetTrans.Dim.X) {
-					trans.Pos.X -= x / float32(distance)
-					trans.Pos.Y -= y / float32(distance)
-				}
-			case components.AI_TYPE_FLEE:
-				globals.Logger.Info("distance: %f", distance)
-				if distance < float64(targetTrans.Dim.X*2) {
-					trans.Pos.X += x / float32(distance) * .5
-					trans.Pos.Y += y / float32(distance) * .5
+			a := sdl.FRect{X: trans.Pos.X, Y: trans.Pos.Y, W: trans.Dim.X, H: trans.Dim.Y}
+			b := sdl.FRect{X: targetTrans.Pos.X, Y: targetTrans.Pos.Y, W: targetTrans.Dim.X, H: targetTrans.Dim.Y}
+			if algorithm.AABB(a, b) {
+				globals.Logger.Info("collision")
+			} else {
+				switch ai.AIType {
+				case components.AI_TYPE_CHASE:
+					if distance > float64(targetTrans.Dim.X) {
+						trans.Pos.X -= x / float32(distance)
+						trans.Pos.Y -= y / float32(distance)
+					}
+				case components.AI_TYPE_FLEE:
+					globals.Logger.Info("distance: %f", distance)
+					if distance < float64(targetTrans.Dim.X*2) {
+						trans.Pos.X += x / float32(distance) * trans.Speed
+						trans.Pos.Y += y / float32(distance) * trans.Speed
+					}
 				}
 			}
 		}
 
-		globals.Logger.Info("%d, x: %f, y: %f", entity.ID(), trans.Pos.X, trans.Pos.Y)
+		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), trans.Pos.X, trans.Pos.Y)
 	}
 }

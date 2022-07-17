@@ -10,6 +10,7 @@ type TransformComponent struct {
 	Angle  float64
 	Center sdl.FPoint
 	Flip   sdl.RendererFlip
+	Speed  float32
 }
 
 type TransformInterface interface {

@@ -15,10 +15,10 @@ type ableType reflect.Type
 
 type systemTypeToAbleSlice map[systemType][]ableType
 
-func NewWorld() World {
+func NewWorld() *World {
 	world := World{}
 	world.systemTypeToAbleSlice = make(systemTypeToAbleSlice)
-	return world
+	return &world
 }
 
 func (w *World) AddSystem(system System, ables ...interface{}) {

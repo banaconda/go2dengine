@@ -73,7 +73,7 @@ func (s *RenderSystem) RenderDraw(d *components.DrawComponent, t *components.Tra
 			H: t.Dim.Y,
 		}
 		s.Renderer.DrawRectF(&rect)
-	case components.DRAW_SHAPE_CIRCLE:
 
+	case components.DRAW_SHAPE_CIRCLE:
 	}
 }

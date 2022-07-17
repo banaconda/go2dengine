@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	AI_TYPE_CHASER = iota
+	AI_TYPE_CHASE = iota
 	AI_TYPE_FLEE
 	AI_TYPE_ATTACKER
 )

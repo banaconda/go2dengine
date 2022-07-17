@@ -75,8 +75,8 @@ func (s *ControlSystem) Update() {
 			distance := math.Sqrt(float64(curDir.X*curDir.X + curDir.Y*curDir.Y))
 
 			trans := entity.GetTransformComponent()
-			trans.Pos.X += curDir.X / float32(distance)
-			trans.Pos.Y += curDir.Y / float32(distance)
+			trans.Pos.X += curDir.X / float32(distance) * trans.Speed
+			trans.Pos.Y += curDir.Y / float32(distance) * trans.Speed
 		}
 
 		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), action.CurDir.X, action.CurDir.Y)

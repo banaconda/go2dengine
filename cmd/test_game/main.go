@@ -37,6 +37,7 @@ func run() int {
 		count++
 
 		g.Update()
+		g.Debug()
 
 		totalDelay := frameDelay * count
 		diff := totalDelay - time.Since(before1s).Nanoseconds()
