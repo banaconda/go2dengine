@@ -69,6 +69,8 @@ func (s *ControlSystem) Update() {
 	for _, entity := range s.entities {
 		entity.ID()
 		action := entity.GetActionComponent()
+		action.LastDir = action.CurDir
+		action.CurDir = curDir
 
 		// TODO: change to check collision
 		if curDir.X != 0 || curDir.Y != 0 {
@@ -80,5 +82,9 @@ func (s *ControlSystem) Update() {
 		}
 
 		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), action.CurDir.X, action.CurDir.Y)
+	}
+	posSystem := GetPositionSystem()
+	for _, entity := range posSystem.entities {
+		globals.Logger.Info("%d", entity.ID())
 	}
 }

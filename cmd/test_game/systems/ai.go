@@ -64,7 +64,7 @@ func (s *AISystem) Update() {
 		switch ai.AIType {
 		case components.AI_TYPE_CHASE:
 			if algorithm.AABB(a, b) {
-				globals.Logger.Info("collision")
+				globals.Logger.Debug("collision")
 			} else {
 				if distance > float64(targetTrans.Dim.X) {
 					trans.Pos.X -= x / float32(distance)
@@ -72,7 +72,7 @@ func (s *AISystem) Update() {
 				}
 			}
 		case components.AI_TYPE_FLEE:
-			globals.Logger.Info("distance: %f", distance)
+			globals.Logger.Debug("distance: %f", distance)
 			if distance < float64(targetTrans.Dim.X*2) {
 				trans.Pos.X += x / float32(distance) * trans.Speed
 				trans.Pos.Y += y / float32(distance) * trans.Speed

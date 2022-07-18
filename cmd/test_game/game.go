@@ -124,11 +124,16 @@ func (g *Game) Update() {
 func (g *Game) Debug() {
 	state := sdl.GetKeyboardState()
 	if state[sdl.SCANCODE_F4] == 1 {
-		globals.World.AddEntity(factory.CraeteEnemy(
-			player,
-			sdl.FPoint{
-				X: float32(math.Remainder(rand.Float64(), float64(g.width))),
-				Y: float32(math.Remainder(rand.Float64(), float64(g.height)))}))
+		for i := 0; i < 1000; i++ {
+			globals.World.AddEntity(factory.CraeteEnemy(
+				player,
+				sdl.FPoint{
+					X: float32(math.Remainder(rand.Float64(), float64(g.width))),
+					Y: float32(math.Remainder(rand.Float64(), float64(g.height)))}))
+		}
+	}
+	if state[sdl.SCANCODE_ESCAPE] == 1 {
+		globals.IsRunning = false
 	}
 }
 

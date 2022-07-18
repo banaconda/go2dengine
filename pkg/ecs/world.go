@@ -21,10 +21,15 @@ func NewWorld() *World {
 	return &world
 }
 
-func (w *World) AddSystem(system System, ables ...interface{}) {
+func (w *World) AddSystem(system System, ables interface{}) {
 	w.systems = append(w.systems, system)
 	sysT := reflect.TypeOf(system)
-	for _, able := range ables {
+
+	if !reflect.TypeOf(ables).AssignableTo(reflect.TypeOf([]interface{}{})) {
+		ables = []interface{}{ables}
+	}
+
+	for _, able := range ables.([]interface{}) {
 		ableT := reflect.TypeOf(able).Elem()
 		w.systemTypeToAbleSlice[sysT] = append(
 			w.systemTypeToAbleSlice[sysT],
