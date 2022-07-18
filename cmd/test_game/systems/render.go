@@ -49,12 +49,12 @@ func (s *RenderSystem) Update() {
 		for _, entity := range entities {
 			entity.ID()
 			trans := entity.GetTransformComponent()
-			vec := &trans.Pos
+			Rect := &trans.Rect
 
 			draw := entity.GetDrawComponent()
 
 			s.RenderDraw(draw, trans)
-			globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), vec.X, vec.Y)
+			globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), Rect.X, Rect.Y)
 		}
 	}
 }
@@ -66,13 +66,7 @@ func (s *RenderSystem) RenderDraw(d *components.DrawComponent, t *components.Tra
 
 	switch d.Shape {
 	case components.DRAW_SHAPE_RECT:
-		rect := sdl.FRect{
-			X: t.Pos.X,
-			Y: t.Pos.Y,
-			W: t.Dim.X,
-			H: t.Dim.Y,
-		}
-		s.Renderer.DrawRectF(&rect)
+		s.Renderer.DrawRectF(&t.Rect)
 
 	case components.DRAW_SHAPE_CIRCLE:
 	}

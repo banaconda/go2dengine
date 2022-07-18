@@ -5,8 +5,7 @@ import (
 )
 
 type TransformComponent struct {
-	Pos    sdl.FPoint
-	Dim    sdl.FPoint
+	Rect   sdl.FRect
 	Angle  float64
 	Center sdl.FPoint
 	Flip   sdl.RendererFlip

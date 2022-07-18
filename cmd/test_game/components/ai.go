@@ -5,9 +5,11 @@ import (
 )
 
 const (
-	AI_TYPE_CHASE = iota
+	AI_TYPE_STOP = iota
+	AI_TYPE_CHASE
 	AI_TYPE_FLEE
 	AI_TYPE_ATTACKER
+	AI_TYPE_MAX
 )
 
 type AIComponent struct {

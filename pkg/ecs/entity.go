@@ -20,6 +20,10 @@ func NewEntity() *Entity {
 	return &Entity{id: atomic.AddUint64(&gid, 1)}
 }
 
+func GetGid() uint64 {
+	return gid
+}
+
 func (e *Entity) ID() uint64 {
 	return e.id
 }

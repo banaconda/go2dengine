@@ -61,45 +61,39 @@ var player entities.Player
 func (g *Game) InitECS() {
 	globals.World = ecs.NewWorld()
 
+	globals.World.AddSystem(&systems.ControlSystem{}, systems.Controllable)
+	globals.World.AddSystem(&systems.AISystem{}, systems.AIable)
+	globals.World.AddSystem(&systems.CollisionSystem{}, systems.Collidable)
 	globals.World.AddSystem(&systems.PositionSystem{}, systems.Positionable)
 	globals.World.AddSystem(&systems.RenderSystem{
 		Renderer: g.renderer,
 	}, systems.Drawable)
-	globals.World.AddSystem(&systems.ControlSystem{}, systems.Controllable)
-	globals.World.AddSystem(&systems.AISystem{}, systems.AIable)
 
 	player = entities.Player{
-		Entity: ecs.NewEntity(),
-		ActionComponent: &components.ActionComponent{
-			CurDir:  sdl.FPoint{},
-			LastDir: sdl.FPoint{},
-			Motion:  0,
+		Entity:           ecs.NewEntity(),
+		CameraComponent:  &components.CameraComponent{},
+		ControlComponent: &components.ControlComponent{},
+		ActionComponent:  &components.ActionComponent{CurDir: sdl.FPoint{}, LastDir: sdl.FPoint{}, Motion: 0},
+		CollisionComponent: &components.CollisionComponent{
+			Rect:   sdl.FRect{X: 100, Y: 100, W: 100, H: 100},
+			Enable: true,
 		},
-		TransformComponent: &components.TransformComponent{
-			Pos:    sdl.FPoint{X: 100, Y: 110},
-			Dim:    sdl.FPoint{X: 100, Y: 100},
-			Angle:  0,
-			Center: sdl.FPoint{},
-			Flip:   0,
-			Speed:  3,
-		},
-		DrawComponent: &components.DrawComponent{
-			Type:  components.DRAW_TYPE_PLAYER,
-			Shape: components.DRAW_SHAPE_RECT,
-			R:     0,
-			G:     255,
-			B:     0,
-			A:     255,
-		},
+		TransformComponent: &components.TransformComponent{Rect: sdl.FRect{X: 100, Y: 100, W: 100, H: 100}, Angle: 0, Center: sdl.FPoint{}, Flip: 0, Speed: 3},
+		DrawComponent:      &components.DrawComponent{Type: components.DRAW_TYPE_PLAYER, Shape: components.DRAW_SHAPE_RECT, R: 0, G: 255, B: 0, A: 255},
 	}
 	globals.World.AddEntity(&player)
 
-	enemy := factory.CraeteEnemy(player, sdl.FPoint{X: 100, Y: 100})
+	enemy := factory.CraeteEnemy(player, sdl.FRect{
+		X: 80,
+		Y: 80,
+		W: 80,
+		H: 80,
+	})
 	globals.World.AddEntity(&enemy)
 
-	for x := 0; x < 8; x++ {
-		for y := 0; y < 8; y++ {
-			tile := factory.CreateTile(sdl.FPoint{X: float32(x * 100), Y: float32(y * 100)})
+	for x := 0; x < 24; x++ {
+		for y := 0; y < 14; y++ {
+			tile := factory.CreateTile(sdl.FRect{X: float32(x * 80), Y: float32(y * 80), W: 80, H: 80})
 			globals.World.AddEntity(&tile)
 		}
 	}
@@ -127,9 +121,13 @@ func (g *Game) Debug() {
 		for i := 0; i < 1000; i++ {
 			globals.World.AddEntity(factory.CraeteEnemy(
 				player,
-				sdl.FPoint{
+				sdl.FRect{
 					X: float32(math.Remainder(rand.Float64(), float64(g.width))),
-					Y: float32(math.Remainder(rand.Float64(), float64(g.height)))}))
+					Y: float32(math.Remainder(rand.Float64(), float64(g.height))),
+					W: 80,
+					H: 80,
+				},
+			))
 		}
 	}
 	if state[sdl.SCANCODE_ESCAPE] == 1 {

@@ -4,6 +4,7 @@ package main
 
 import (
 	"go2dengine/cmd/test_game/globals"
+	"go2dengine/pkg/ecs"
 	"time"
 
 	nblogger "github.com/banaconda/nb-logger"
@@ -15,7 +16,7 @@ func init() {
 
 func run() int {
 	g := Game{}
-	g.InitSDL("test", sdl.WINDOWPOS_CENTERED, sdl.WINDOWPOS_CENTERED, 800, 600)
+	g.InitSDL("test", sdl.WINDOWPOS_CENTERED, sdl.WINDOWPOS_CENTERED, 1920, 1080)
 	if !globals.IsRunning {
 		globals.Logger.Error("sdl initialization fail")
 		return -1
@@ -30,7 +31,7 @@ func run() int {
 	for globals.IsRunning {
 		tick := time.Now()
 		if tick.Sub(before1s).Nanoseconds() > 1000000000 {
-			globals.Logger.Info("fps: %d", count)
+			globals.Logger.Info("fps: %d, num of entities: %d", count, ecs.GetGid())
 			before1s = tick
 			count = 0
 		}

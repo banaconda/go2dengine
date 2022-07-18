@@ -7,6 +7,8 @@ import (
 
 type Tile struct {
 	*ecs.Entity
+	*components.CameraComponent
+	*components.CollisionComponent
 	*components.TransformComponent
 	*components.DrawComponent
 }

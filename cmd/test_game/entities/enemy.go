@@ -7,7 +7,10 @@ import (
 
 type Enemy struct {
 	*ecs.Entity
+	*components.CameraComponent
 	*components.AIComponent
+	*components.ActionComponent
+	*components.CollisionComponent
 	*components.TransformComponent
 	*components.DrawComponent
 }

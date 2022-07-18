@@ -7,7 +7,10 @@ import (
 
 type Player struct {
 	*ecs.Entity
+	*components.CameraComponent
+	*components.ControlComponent
 	*components.ActionComponent
+	*components.CollisionComponent
 	*components.TransformComponent
 	*components.DrawComponent
 }

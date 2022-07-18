@@ -1,13 +1,10 @@
 package systems
 
 import (
-	"go2dengine/cmd/test_game/algorithm"
 	"go2dengine/cmd/test_game/components"
 	"go2dengine/cmd/test_game/globals"
 	"go2dengine/pkg/ecs"
 	"math"
-
-	"github.com/veandco/go-sdl2/sdl"
 )
 
 var AIable *aiable
@@ -15,12 +12,14 @@ var AIable *aiable
 type aiEntity struct {
 	*ecs.Entity
 	*components.AIComponent
+	*components.ActionComponent
 	*components.TransformComponent
 }
 
 type aiable interface {
 	ecs.DefaultEntityInterface
 	components.AIInterface
+	components.ActionInterface
 	components.TransformInterface
 }
 
@@ -34,6 +33,7 @@ func (s *AISystem) Add(id ecs.Identifier) {
 		aiEntity{
 			obj.GetEntity(),
 			obj.GetAIComponent(),
+			obj.GetActionComponent(),
 			obj.GetTransformComponent(),
 		})
 }
@@ -55,30 +55,23 @@ func (s *AISystem) Update() {
 
 		trans := entity.GetTransformComponent()
 
-		x := trans.Pos.X - targetTrans.Pos.X
-		y := trans.Pos.Y - targetTrans.Pos.Y
+		x := trans.Rect.X - targetTrans.Rect.X
+		y := trans.Rect.Y - targetTrans.Rect.Y
 
-		a := sdl.FRect{X: trans.Pos.X, Y: trans.Pos.Y, W: trans.Dim.X, H: trans.Dim.Y}
-		b := sdl.FRect{X: targetTrans.Pos.X, Y: targetTrans.Pos.Y, W: targetTrans.Dim.X, H: targetTrans.Dim.Y}
 		distance := math.Sqrt(float64(x*x + y*y))
+
+		action := entity.GetActionComponent()
+		action.LastDir = action.CurDir
 		switch ai.AIType {
 		case components.AI_TYPE_CHASE:
-			if algorithm.AABB(a, b) {
-				globals.Logger.Debug("collision")
-			} else {
-				if distance > float64(targetTrans.Dim.X) {
-					trans.Pos.X -= x / float32(distance)
-					trans.Pos.Y -= y / float32(distance)
-				}
-			}
+			action.CurDir.X = -x / float32(distance)
+			action.CurDir.Y = -y / float32(distance)
 		case components.AI_TYPE_FLEE:
-			globals.Logger.Debug("distance: %f", distance)
-			if distance < float64(targetTrans.Dim.X*2) {
-				trans.Pos.X += x / float32(distance) * trans.Speed
-				trans.Pos.Y += y / float32(distance) * trans.Speed
-			}
+			action.CurDir.X = +x / float32(distance)
+			action.CurDir.Y = +y / float32(distance)
 		}
 
-		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), trans.Pos.X, trans.Pos.Y)
+		globals.Logger.Debug("%d, x: %f, y: %f, w: %f, h: %f",
+			entity.ID(), trans.Rect.X, trans.Rect.Y, trans.Rect.W, trans.Rect.H)
 	}
 }

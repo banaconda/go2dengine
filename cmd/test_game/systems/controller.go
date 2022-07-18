@@ -4,7 +4,6 @@ import (
 	"go2dengine/cmd/test_game/components"
 	"go2dengine/cmd/test_game/globals"
 	"go2dengine/pkg/ecs"
-	"math"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -14,13 +13,15 @@ var Controllable *controllable
 type controlEntity struct {
 	*ecs.Entity
 	*components.ActionComponent
-	*components.TransformComponent
+	// *components.TransformComponent
+	*components.ControlComponent
 }
 
 type controllable interface {
 	ecs.DefaultEntityInterface
 	components.ActionInterface
-	components.TransformInterface
+	// components.TransformInterface
+	components.ControlInterface
 }
 
 type ControlSystem struct {
@@ -29,7 +30,11 @@ type ControlSystem struct {
 
 func (s *ControlSystem) Add(id ecs.Identifier) {
 	obj := id.(controllable)
-	s.entities = append(s.entities, controlEntity{obj.GetEntity(), obj.GetActionComponent(), obj.GetTransformComponent()})
+	s.entities = append(s.entities,
+		controlEntity{obj.GetEntity(),
+			obj.GetActionComponent(),
+			// obj.GetTransformComponent(),
+			obj.GetControlComponent()})
 }
 
 func (s *ControlSystem) Priority() int {
@@ -71,20 +76,6 @@ func (s *ControlSystem) Update() {
 		action := entity.GetActionComponent()
 		action.LastDir = action.CurDir
 		action.CurDir = curDir
-
-		// TODO: change to check collision
-		if curDir.X != 0 || curDir.Y != 0 {
-			distance := math.Sqrt(float64(curDir.X*curDir.X + curDir.Y*curDir.Y))
-
-			trans := entity.GetTransformComponent()
-			trans.Pos.X += curDir.X / float32(distance) * trans.Speed
-			trans.Pos.Y += curDir.Y / float32(distance) * trans.Speed
-		}
-
 		globals.Logger.Debug("%d, x: %f, y: %f", entity.ID(), action.CurDir.X, action.CurDir.Y)
-	}
-	posSystem := GetPositionSystem()
-	for _, entity := range posSystem.entities {
-		globals.Logger.Info("%d", entity.ID())
 	}
 }
